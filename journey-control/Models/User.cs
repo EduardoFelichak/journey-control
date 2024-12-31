@@ -9,5 +9,6 @@
         public DateTime CreatedOn { get; set; }
         public DateTime LastLoginOn { get; set; }
         public string ApiKey { get; set; }
+        public int ProjectId { get; set; }
     }
 }

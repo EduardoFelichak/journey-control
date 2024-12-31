@@ -32,6 +32,10 @@
             panel6 = new Panel();
             panel8 = new Panel();
             btnSave = new Button();
+            panel12 = new Panel();
+            cmbProject = new ComboBox();
+            panel11 = new Panel();
+            lblProject = new Label();
             panel9 = new Panel();
             txtApiCode = new TextBox();
             panel7 = new Panel();
@@ -75,12 +79,16 @@
             // panel8
             // 
             panel8.Controls.Add(btnSave);
+            panel8.Controls.Add(panel12);
+            panel8.Controls.Add(cmbProject);
+            panel8.Controls.Add(panel11);
+            panel8.Controls.Add(lblProject);
             panel8.Controls.Add(panel9);
             panel8.Controls.Add(txtApiCode);
             panel8.Dock = DockStyle.Fill;
-            panel8.Location = new Point(0, 96);
+            panel8.Location = new Point(0, 84);
             panel8.Name = "panel8";
-            panel8.Size = new Size(252, 148);
+            panel8.Size = new Size(252, 160);
             panel8.TabIndex = 1;
             // 
             // btnSave
@@ -89,7 +97,7 @@
             btnSave.Dock = DockStyle.Top;
             btnSave.FlatStyle = FlatStyle.Popup;
             btnSave.ForeColor = SystemColors.ButtonHighlight;
-            btnSave.Location = new Point(0, 50);
+            btnSave.Location = new Point(0, 109);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(252, 23);
             btnSave.TabIndex = 2;
@@ -97,12 +105,51 @@
             btnSave.UseVisualStyleBackColor = false;
             btnSave.Click += btnSave_Click;
             // 
+            // panel12
+            // 
+            panel12.Dock = DockStyle.Top;
+            panel12.Location = new Point(0, 85);
+            panel12.Name = "panel12";
+            panel12.Size = new Size(252, 24);
+            panel12.TabIndex = 6;
+            // 
+            // cmbProject
+            // 
+            cmbProject.BackColor = Color.FromArgb(45, 45, 45);
+            cmbProject.Dock = DockStyle.Top;
+            cmbProject.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbProject.ForeColor = SystemColors.Info;
+            cmbProject.FormattingEnabled = true;
+            cmbProject.Location = new Point(0, 62);
+            cmbProject.Name = "cmbProject";
+            cmbProject.Size = new Size(252, 23);
+            cmbProject.TabIndex = 5;
+            // 
+            // panel11
+            // 
+            panel11.Dock = DockStyle.Top;
+            panel11.Location = new Point(0, 52);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(252, 10);
+            panel11.TabIndex = 7;
+            // 
+            // lblProject
+            // 
+            lblProject.AutoSize = true;
+            lblProject.Dock = DockStyle.Top;
+            lblProject.ForeColor = SystemColors.ButtonHighlight;
+            lblProject.Location = new Point(0, 37);
+            lblProject.Name = "lblProject";
+            lblProject.Size = new Size(94, 15);
+            lblProject.TabIndex = 3;
+            lblProject.Text = "Principal Projeto";
+            // 
             // panel9
             // 
             panel9.Dock = DockStyle.Top;
             panel9.Location = new Point(0, 23);
             panel9.Name = "panel9";
-            panel9.Size = new Size(252, 27);
+            panel9.Size = new Size(252, 14);
             panel9.TabIndex = 1;
             // 
             // txtApiCode
@@ -124,7 +171,7 @@
             panel7.Dock = DockStyle.Top;
             panel7.Location = new Point(0, 0);
             panel7.Name = "panel7";
-            panel7.Size = new Size(252, 96);
+            panel7.Size = new Size(252, 84);
             panel7.TabIndex = 0;
             // 
             // label2
@@ -132,7 +179,7 @@
             label2.AutoSize = true;
             label2.Dock = DockStyle.Bottom;
             label2.ForeColor = SystemColors.ButtonHighlight;
-            label2.Location = new Point(0, 71);
+            label2.Location = new Point(0, 59);
             label2.Name = "label2";
             label2.Size = new Size(150, 15);
             label2.TabIndex = 1;
@@ -141,7 +188,7 @@
             // panel10
             // 
             panel10.Dock = DockStyle.Bottom;
-            panel10.Location = new Point(0, 86);
+            panel10.Location = new Point(0, 74);
             panel10.Name = "panel10";
             panel10.Size = new Size(252, 10);
             panel10.TabIndex = 0;
@@ -231,5 +278,9 @@
         private Label label1;
         private Panel panel10;
         private Label label2;
+        private Label lblProject;
+        private Panel panel12;
+        private ComboBox cmbProject;
+        private Panel panel11;
     }
 }
