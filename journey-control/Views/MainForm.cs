@@ -6,6 +6,8 @@ using journey_control.Repositories;
 using journey_control.Services;
 using journey_control.Views.Components.Cards;
 using journey_control.Views.Components.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
+using Microsoft.VisualBasic;
 using Task = System.Threading.Tasks.Task;
 
 namespace journey_control.Views
@@ -13,7 +15,7 @@ namespace journey_control.Views
     public partial class MainForm : Form
     {
         public Models.Version Version { get; set; }
-        public User User { get; set; }
+        public Models.User User { get; set; }
 
         private readonly TaskRepo _taskRepo = new TaskRepo();
         private readonly VersionRepo _versionRepo = new VersionRepo();
@@ -288,61 +290,100 @@ namespace journey_control.Views
 
         private async void btnAddTask_Click(object sender, EventArgs e)
         {
-            using (var inputForm = new InputForm())
+            ShowLoading(true); 
+
+            try
             {
-                if (inputForm.ShowDialog() == DialogResult.OK)
+                using (var inputForm = new InputForm())
                 {
-                    var taskNumber = inputForm.InputText;
-
-                    if (int.TryParse(taskNumber, out int taskId))
+                    if (inputForm.ShowDialog() == DialogResult.OK)
                     {
-                        ShowLoading(true);
+                        var user = UserDataManager.LoadUserData();
+                        Models.Version version = await _versionRepo.GetVersionPerDate(currentDate);
 
-                        try
+                        if (inputForm.isCustom)
                         {
-                            var redmineService = new RedmineService();
-                            var issue = await redmineService.GetIssueAsync(taskId);
-
-                            if (issue != null)
+                            var newTask = new Models.Task
                             {
-                                // Adiciona ou atualiza a tarefa no banco
-                                await _taskRepo.AddTaskFromIssueAsync(issue);
+                                Id = inputForm.InputText,
+                                Title = inputForm.DescrText,
+                                Description = "Tarefa customizada",
+                                StartDate = inputForm.StartDate,
+                                DueDate = inputForm.DueDate,
+                                Size = SizeE.N,
+                                Status = "Nenhum",
+                                Project = user.ProjectId,
+                                UserId = user.Id,
+                                VersionId = version.Id,
+                                VersionProjectId = version.ProjectId,
+                            };
 
-                                // Verifica se a data atual está no intervalo
-                                if (currentDate < issue.StartDate || currentDate > issue.DueDate)
+                            await _taskRepo.Add(newTask);
+
+                            if (currentDate < newTask.StartDate || currentDate > newTask.DueDate)
+                            {
+                                MessageBox.Show(
+                                    $"A tarefa foi adicionada, mas está entre as datas: {newTask.StartDate.ToString("dd/MM/yyyy")} - {newTask.DueDate.ToString("dd/MM/yyyy")}.",
+                                    "Aviso",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning);
+                            }
+
+                            await LoadTasksAsync();
+
+                            MessageBox.Show("Tarefa customizada adicionada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            if (int.TryParse(inputForm.InputText, out int taskId))
+                            {
+                                try
                                 {
-                                    MessageBox.Show(
-                                        $"A tarefa foi adicionada, mas está entre as datas: {issue.StartDate?.ToString("dd/MM/yyyy")} - {issue.DueDate?.ToString("dd/MM/yyyy")}.",
-                                        "Aviso",
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Warning);
+                                    var redmineService = new RedmineService();
+                                    var issue = await redmineService.GetIssueAsync(taskId);
+
+                                    if (issue != null)
+                                    {
+                                        await _taskRepo.AddTaskFromIssueAsync(issue);
+
+                                        if (currentDate < issue.StartDate || currentDate > issue.DueDate)
+                                        {
+                                            MessageBox.Show(
+                                                $"A tarefa foi adicionada, mas está entre as datas: {issue.StartDate?.ToString("dd/MM/yyyy")} - {issue.DueDate?.ToString("dd/MM/yyyy")}.",
+                                                "Aviso",
+                                                MessageBoxButtons.OK,
+                                                MessageBoxIcon.Warning);
+                                        }
+
+                                        await LoadTasksAsync();
+                                        MessageBox.Show("Tarefa adicionada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Tarefa não encontrada no Redmine.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    }
                                 }
-
-                                await LoadTasksAsync();
-
-                                MessageBox.Show("Tarefa adicionada com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                catch (Exception ex)
+                                {
+                                    MessageBox.Show($"Erro ao buscar a tarefa no Redmine: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("Tarefa não encontrada no Redmine.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                MessageBox.Show("O número da tarefa informado é inválido. Por favor, insira um número válido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show($"Erro ao adicionar tarefa: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        finally
-                        {
-                            ShowLoading(false);
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("O número da tarefa informado é inválido. Por favor, insira um número válido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao adicionar tarefa: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                ShowLoading(false); 
+            }
         }
-
     }
 }

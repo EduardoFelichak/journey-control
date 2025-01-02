@@ -31,6 +31,12 @@ namespace journey_control.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async System.Threading.Tasks.Task Add(Models.Task task)
+        {
+            _context.Tasks.Add(task);
+            await _context.SaveChangesAsync();
+        }
+
         public async System.Threading.Tasks.Task AddTaskFromIssueAsync(Issue issue)
         {
             var user = UserDataManager.LoadUserData();
@@ -38,9 +44,8 @@ namespace journey_control.Repositories
             if (issue == null)
                 throw new ArgumentNullException(nameof(issue), "A issue não pode ser nula.");
 
-            // Verifica se a tarefa já existe no banco de dados
             var existingTask = await _context.Tasks
-                .AsNoTracking() // Evita rastrear múltiplas instâncias
+                .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == issue.Id.ToString() && t.UserId == user.Id);
 
             if (existingTask != null)
@@ -55,7 +60,7 @@ namespace journey_control.Repositories
                 existingTask.Size = GetSizeEnum(issue.Size);
                 existingTask.Status = issue.Status;
 
-                _context.Entry(existingTask).State = EntityState.Modified; // Marca como modificada
+                _context.Entry(existingTask).State = EntityState.Modified; 
             }
             else
             {
@@ -77,10 +82,10 @@ namespace journey_control.Repositories
                     VersionProjectId = issue.ProjectId,
                 };
 
-                await _context.Tasks.AddAsync(newTask); // Adiciona a nova tarefa
+                await _context.Tasks.AddAsync(newTask); 
             }
 
-            await _context.SaveChangesAsync(); // Salva todas as alterações
+            await _context.SaveChangesAsync();
         }
 
         public async Task<ICollection<Models.Task>> GetAllPerUserAndDate(DateTime date)

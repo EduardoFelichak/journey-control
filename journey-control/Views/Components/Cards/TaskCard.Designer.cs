@@ -66,7 +66,7 @@
             // txtTaskNumber
             // 
             txtTaskNumber.Dock = DockStyle.Fill;
-            txtTaskNumber.Font = new Font("Segoe UI", 20F, FontStyle.Bold);
+            txtTaskNumber.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             txtTaskNumber.ForeColor = Color.White;
             txtTaskNumber.Location = new Point(0, 0);
             txtTaskNumber.Name = "txtTaskNumber";
