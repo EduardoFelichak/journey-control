@@ -20,6 +20,8 @@ namespace journey_control
                 user = await redmineService.GetUserAsync(user.ApiKey);
             }
 
+            //usando o seguinte comando: Application.ProductVersion.Split('+')[0] podemos pegar a versão guardada no binário do projeto
+
             if (user != null)
             {
                 Application.Run(new MainForm());
