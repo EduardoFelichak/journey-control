@@ -2,6 +2,8 @@
 {
     public partial class TaskCard : UserControl
     {
+        public event EventHandler<string> TimerControlClicked;
+
         public TaskCard()
         {
             InitializeComponent();
@@ -34,6 +36,11 @@
         public void ControlButtons(bool enable)
         {
             btnTimerControl.Enabled = enable;
+        }
+
+        private void btnTimerControl_Click(object sender, EventArgs e)
+        {
+            TimerControlClicked?.Invoke(this, TaskNumber);
         }
     }
 }

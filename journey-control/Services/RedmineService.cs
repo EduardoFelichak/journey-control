@@ -232,7 +232,6 @@ namespace journey_control.Services
                                     TaskUserId = user.Id,
                                     DateEntrie = DateOnly.Parse((string)timeEntry.spent_on),
                                     Duration = (int)(hours * 3600),
-                                    IsInProgress = false
                                 });
                             }
                         }

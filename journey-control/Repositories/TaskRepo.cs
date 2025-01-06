@@ -103,6 +103,7 @@ namespace journey_control.Repositories
 
             var tasks = await _context.Tasks
                 .Include(t => t.Entries)
+                .Include(t => t.LocalEntries)
                 .Where(t => t.UserId == user.Id
                             && t.StartDate <= date
                             && t.DueDate   >= date) 
@@ -116,6 +117,7 @@ namespace journey_control.Repositories
             Models.User user = UserDataManager.LoadUserData();
             return await _context.Tasks
                 .Include(t => t.Entries)
+                .Include(t => t.LocalEntries)
                 .Where(t => t.UserId == user.Id && t.VersionId == versionId)
                 .ToListAsync();
         }

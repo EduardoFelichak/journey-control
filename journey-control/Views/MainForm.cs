@@ -9,6 +9,7 @@ using journey_control.Views.Components.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
 using Microsoft.VisualBasic;
 using Task = System.Threading.Tasks.Task;
+using System.Threading.Tasks;
 
 namespace journey_control.Views
 {
@@ -74,20 +75,56 @@ namespace journey_control.Views
             }
         }
 
-        private async Task LoadTasksAsync()
+        private async System.Threading.Tasks.Task ControlTotalizers()
+        {
+            EntriesRepo entriesRepo = new EntriesRepo();
+            LocalEntriesRepo localEntriesRepo = new LocalEntriesRepo();
+
+            string releasedTime  = TimeSpan.FromSeconds(await entriesRepo.GetRealesedTime(currentDate)).ToString(@"hh\:mm\:ss");
+            string beggingTime   = TimeSpan.FromSeconds(await localEntriesRepo.GetRealesedTime(currentDate)).ToString(@"hh\:mm\:ss");
+            string totalDuration = TimeSpan.FromSeconds(await entriesRepo.GetTotalSpentTimePerDate(currentDate)).ToString(@"hh\:mm\:ss");
+            string workDuration  = TimeSpan.FromSeconds(await entriesRepo.GetWorkTimeSpentPerDate(currentDate)).ToString(@"hh\:mm\:ss");
+            string studyDuration = TimeSpan.FromSeconds(await entriesRepo.GetStudyTimeSpentPerDate(currentDate)).ToString(@"hh\:mm\:ss");
+
+            txtTotalTime.Text    = totalDuration;
+            txtWorkTime.Text     = workDuration;
+            txtStudyTime.Text    = studyDuration;
+            txtBeggingTime.Text  = beggingTime;
+            txtReleasedTime.Text = releasedTime;
+        }
+
+        public async Task LoadTasksAsync()
         {
             ShowLoading(true);
 
             try
             {
-                var newTasks = await _taskRepo.GetAllPerUserAndDate(currentDate);
+                tasks = await _taskRepo.GetAllPerUserAndDate(currentDate);
 
-                tasks = newTasks;
+                var entriesRepo = new EntriesRepo();
+                var localEntriesRepo = new LocalEntriesRepo();
 
                 pnlTaskList.Controls.Clear();
 
                 foreach (var task in tasks)
+                {
+                    var totalDuration = await entriesRepo.GetTotalTimeByTaskAndDate(task.Id, currentDate) + 
+                                        await localEntriesRepo.GetTotalTimeByTaskAndDate(task.Id, currentDate);
+
+                    task.Entries = new List<Entrie>
+                    {
+                        new Entrie
+                        {
+                            TaskId = task.Id,
+                            Duration = totalDuration,
+                            DateEntrie = currentDate,
+                        }
+                    };
+
                     AddTaskCard(task);
+                }
+
+                await ControlTotalizers();
 
                 pnlTaskList.PerformLayout();
                 pnlTaskList.Refresh();
@@ -128,12 +165,26 @@ namespace journey_control.Views
             };
 
             taskCard.ControlButtons(currentDate == DateOnly.FromDateTime(DateTime.Today));
+            taskCard.TimerControlClicked += TaskCard_TimerControlClicked;
 
             int cardWidth = (pnlTaskList.ClientSize.Width - 40) / 2;
             taskCard.Width = cardWidth;
             taskCard.Height = 200;
 
             pnlTaskList.Controls.Add(taskCard);
+        }
+
+        private void TaskCard_TimerControlClicked(object sender, string taskNumber)
+        {
+            var task = tasks.FirstOrDefault(t => t.Id == taskNumber);
+
+            if (task != null)
+            {
+                var timeControlForm = new TimeControlForm(task);
+
+                Hide();
+                timeControlForm.Show();
+            }
         }
 
         private void txtTaskSearch_TextChanged(object sender, EventArgs e)
@@ -254,6 +305,15 @@ namespace journey_control.Views
             txtTaskSearch.Enabled = !isLoading;
             btnAddTask.Enabled = !isLoading;
             btnRefreshTasks.Enabled = !isLoading;
+            
+            if (isLoading)
+            {
+                txtWorkTime.Text     = "";
+                txtStudyTime.Text    = "";
+                txtTotalTime.Text    = "";
+                txtReleasedTime.Text = "";
+                txtBeggingTime.Text  = "";
+            }
         }
 
         private void pnlTaskList_Resize(object sender, EventArgs e)

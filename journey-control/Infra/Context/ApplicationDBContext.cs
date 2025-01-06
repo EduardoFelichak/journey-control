@@ -9,6 +9,7 @@ namespace journey_control.Infra.Context
         public DbSet<Models.Version> Versions { get; set; }
         public DbSet<Models.Task> Tasks { get; set; }
         public DbSet<Entrie> Entries { get; set; }
+        public DbSet<LocalEntrie> LocalEntries { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,6 +38,11 @@ namespace journey_control.Infra.Context
                 .HasMany(t => t.Entries)
                 .WithOne(e => e.Task)
                 .HasForeignKey(e => new { e.TaskId, e.TaskUserId });
+
+            modelBuilder.Entity<Models.Task>()
+                .HasMany(t => t.LocalEntries)
+                .WithOne(le => le.Task)
+                .HasForeignKey(le => new { le.TaskId, le.TaskUserId });
 
             base.OnModelCreating(modelBuilder);
         }

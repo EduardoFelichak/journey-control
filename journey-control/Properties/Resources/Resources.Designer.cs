@@ -93,6 +93,16 @@ namespace journey_control.Properties.Resources {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_home {
+            get {
+                object obj = ResourceManager.GetObject("icon_home", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_loading {
             get {
                 object obj = ResourceManager.GetObject("icon_loading", resourceCulture);
@@ -106,6 +116,26 @@ namespace journey_control.Properties.Resources {
         internal static System.Drawing.Bitmap icon_next {
             get {
                 object obj = ResourceManager.GetObject("icon_next", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_pause {
+            get {
+                object obj = ResourceManager.GetObject("icon_pause", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_play {
+            get {
+                object obj = ResourceManager.GetObject("icon_play", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

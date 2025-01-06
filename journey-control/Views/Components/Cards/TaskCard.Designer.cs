@@ -129,6 +129,7 @@
             btnTimerControl.Size = new Size(44, 41);
             btnTimerControl.TabIndex = 4;
             btnTimerControl.UseVisualStyleBackColor = true;
+            btnTimerControl.Click += btnTimerControl_Click;
             // 
             // panel1
             // 

@@ -23,6 +23,7 @@ namespace journey_control.Models
         public Version Version { get; set; }
 
         public ICollection<Entrie> Entries { get; set; }
+        public ICollection<LocalEntrie> LocalEntries { get; set; }  
 
         public Task() { }        
     }
