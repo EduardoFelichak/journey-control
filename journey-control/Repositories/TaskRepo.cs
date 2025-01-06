@@ -29,8 +29,10 @@ namespace journey_control.Repositories
 
         public async Task<Boolean> StudyTaskExists()
         {
+            var user = UserDataManager.LoadUserData();
+
             return await _context.Tasks
-                            .Where(t => t.Id == "Estudo")
+                            .Where(t => t.Id == "Estudo" && t.UserId == user.Id)
                             .AnyAsync();
         }
 
