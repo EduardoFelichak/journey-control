@@ -5,6 +5,7 @@ namespace journey_control.Infra.Context
 {
     public class ApplicationDBContext : DbContext
     {
+        public DbSet<AppVersion> AppVersions { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Models.Version> Versions { get; set; }
         public DbSet<Models.Task> Tasks { get; set; }
