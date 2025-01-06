@@ -1,5 +1,6 @@
 ﻿using journey_control.Enums;
 using journey_control.Models;
+using journey_control.Properties.Resources;
 using journey_control.Repositories;
 
 namespace journey_control.Views.Components.Forms
@@ -56,7 +57,7 @@ namespace journey_control.Views.Components.Forms
 
             txtRemainingTime.Text = _remainingTime.ToString(@"hh\:mm\:ss");
 
-            _timer.Start();
+            Play();
         }
 
         private void PositionFormInBottomRight()
@@ -107,12 +108,12 @@ namespace journey_control.Views.Components.Forms
 
         private void btnPlay_Click(object sender, EventArgs e)
         {
-            _timer.Start();
+            Play();
         }
 
         private void btnPause_Click(object sender, EventArgs e)
         {
-            _timer.Stop();
+            Pause();
         }
 
         private async void btnHome_Click(object sender, EventArgs e)
@@ -158,6 +159,28 @@ namespace journey_control.Views.Components.Forms
                 return;
             }
             base.OnFormClosing(e);
+        }
+
+        private void Pause()
+        {
+            _timer.Stop();
+
+            btnPause.Image = Resources.icon_pause_s;
+            btnPause.Enabled = false;
+
+            btnPlay.Image = Resources.icon_play;
+            btnPlay.Enabled = true;
+        }
+
+        private void Play()
+        {
+            _timer.Start();
+
+            btnPause.Image = Resources.icon_pause;
+            btnPause.Enabled = true;
+
+            btnPlay.Image = Resources.icon_play_s;
+            btnPlay.Enabled = false;
         }
     }
 }

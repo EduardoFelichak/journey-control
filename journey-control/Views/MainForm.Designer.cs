@@ -46,6 +46,7 @@
             pnlFooter = new Panel();
             panel12 = new Panel();
             panel22 = new Panel();
+            btnReleaseTasks = new Button();
             panel14 = new Panel();
             panel17 = new Panel();
             label6 = new Label();
@@ -84,6 +85,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             pnlFooter.SuspendLayout();
             panel12.SuspendLayout();
+            panel22.SuspendLayout();
             panel14.SuspendLayout();
             panel17.SuspendLayout();
             panel19.SuspendLayout();
@@ -388,11 +390,30 @@
             // 
             // panel22
             // 
+            panel22.Controls.Add(btnReleaseTasks);
             panel22.Dock = DockStyle.Fill;
             panel22.Location = new Point(844, 0);
             panel22.Name = "panel22";
             panel22.Size = new Size(298, 133);
             panel22.TabIndex = 4;
+            // 
+            // btnReleaseTasks
+            // 
+            btnReleaseTasks.BackColor = Color.FromArgb(28, 23, 23);
+            btnReleaseTasks.Cursor = Cursors.Hand;
+            btnReleaseTasks.FlatAppearance.BorderSize = 0;
+            btnReleaseTasks.FlatAppearance.MouseDownBackColor = Color.FromArgb(25, 23, 23);
+            btnReleaseTasks.FlatAppearance.MouseOverBackColor = Color.FromArgb(25, 23, 23);
+            btnReleaseTasks.FlatStyle = FlatStyle.Flat;
+            btnReleaseTasks.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnReleaseTasks.ForeColor = Color.FromArgb(218, 218, 218);
+            btnReleaseTasks.ImageAlign = ContentAlignment.MiddleLeft;
+            btnReleaseTasks.Location = new Point(98, 29);
+            btnReleaseTasks.Name = "btnReleaseTasks";
+            btnReleaseTasks.Size = new Size(182, 78);
+            btnReleaseTasks.TabIndex = 7;
+            btnReleaseTasks.Text = "Lançar Tempo";
+            btnReleaseTasks.UseVisualStyleBackColor = false;
             // 
             // panel14
             // 
@@ -728,6 +749,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             pnlFooter.ResumeLayout(false);
             panel12.ResumeLayout(false);
+            panel22.ResumeLayout(false);
             panel14.ResumeLayout(false);
             panel17.ResumeLayout(false);
             panel19.ResumeLayout(false);
@@ -801,5 +823,6 @@
         private Label label2;
         private Panel panel25;
         private Label txtReleasedTime;
+        private Button btnReleaseTasks;
     }
 }

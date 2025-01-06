@@ -133,9 +133,29 @@ namespace journey_control.Properties.Resources {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icon_pause_s {
+            get {
+                object obj = ResourceManager.GetObject("icon_pause_s", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icon_play {
             get {
                 object obj = ResourceManager.GetObject("icon_play", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icon_play_s {
+            get {
+                object obj = ResourceManager.GetObject("icon_play_s", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

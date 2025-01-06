@@ -305,6 +305,7 @@ namespace journey_control.Views
             txtTaskSearch.Enabled = !isLoading;
             btnAddTask.Enabled = !isLoading;
             btnRefreshTasks.Enabled = !isLoading;
+            btnReleaseTasks.Enabled = !isLoading;
             
             if (isLoading)
             {
@@ -436,6 +437,9 @@ namespace journey_control.Views
                                 MessageBox.Show("O número da tarefa informado é inválido. Por favor, insira um número válido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
+                    } else
+                    {
+                        await ControlTotalizers();
                     }
                 }
             }
