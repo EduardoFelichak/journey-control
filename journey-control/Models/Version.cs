@@ -11,8 +11,8 @@ namespace journey_control.Models
         [Key]
         public int ProjectId { get; set; }
         public string Name { get; set; }
-        public DateTime StartDate { get; set; } 
-        public DateTime DueDate { get; set; }
+        public DateOnly StartDate { get; set; } 
+        public DateOnly DueDate { get; set; }
         public Project Project { get; set; }
 
         public ICollection<Task> Tasks { get; set; }

@@ -8,7 +8,7 @@ namespace journey_control.Helpers.DataSync
 {
     public static class TaskSync
     {
-        public static async System.Threading.Tasks.Task Run(DateTime date)
+        public static async System.Threading.Tasks.Task Run(DateOnly date)
         {
             var user = UserDataManager.LoadUserData();
             if (user == null)
@@ -16,6 +16,7 @@ namespace journey_control.Helpers.DataSync
 
             var versionRepo = new VersionRepo();
             var taskRepo = new TaskRepo();
+            var entryRepo = new EntriesRepo();
             var redmineService = new RedmineService();
 
             Models.Version version = await versionRepo.GetVersionPerDate(date);
@@ -49,8 +50,8 @@ namespace journey_control.Helpers.DataSync
                     Description = "Nenhuma descrição",
                     Status = "Geral",
                     Size = SizeE.P,
-                    StartDate = DateTime.MinValue,
-                    DueDate = DateTime.MaxValue,
+                    StartDate = DateOnly.MinValue,
+                    DueDate = DateOnly.MaxValue,
                     UserId = user.Id,
                     VersionId = version.Id,
                     VersionProjectId = version.ProjectId,
@@ -59,8 +60,22 @@ namespace journey_control.Helpers.DataSync
 
             await taskRepo.AddRange(tasksToAdd);
             await taskRepo.UpdateRange(tasksToUpdate);
-        }
 
+            var redmineEntries = await redmineService.GetTimeEntriesAsync(date);
+
+            foreach (var entry in redmineEntries)
+            {
+                var taskExists = await taskRepo.ExistsByIdAndUser(entry.TaskId);
+                if (!taskExists)
+                {
+                    var issue = await redmineService.GetIssueAsync(int.Parse(entry.TaskId));
+                    if (issue != null)
+                        await taskRepo.AddTaskFromIssueAsync(issue);
+                }
+            }
+
+            await entryRepo.AddOrUpdateFromRedmine(redmineEntries);
+        }
 
         private static Models.Task CreateTaskFromIssue(dynamic issue, Models.Version version, int userId)
         {

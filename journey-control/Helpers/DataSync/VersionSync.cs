@@ -5,7 +5,7 @@ namespace journey_control.Helpers.Initializer
 {
     public static class VersionSync
     {
-        public static async Task Run(DateTime date)
+        public static async Task Run(DateOnly date)
         {
             var redmineService = new RedmineService();
 

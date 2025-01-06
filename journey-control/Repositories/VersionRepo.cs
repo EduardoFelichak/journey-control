@@ -24,7 +24,7 @@ namespace journey_control.Repositories
                             .AnyAsync();
         }
 
-        public async Task<Models.Version> GetVersionPerDate(DateTime date)
+        public async Task<Models.Version> GetVersionPerDate(DateOnly date)
         {
             var user = UserDataManager.LoadUserData();
 

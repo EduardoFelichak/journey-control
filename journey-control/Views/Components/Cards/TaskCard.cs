@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace journey_control.Views.Components.Cards
+﻿namespace journey_control.Views.Components.Cards
 {
     public partial class TaskCard : UserControl
     {
@@ -39,6 +29,11 @@ namespace journey_control.Views.Components.Cards
         {
             get => label1.Text;
             set => label1.Text = value;
+        }
+
+        public void ControlButtons(bool enable)
+        {
+            btnTimerControl.Enabled = enable;
         }
     }
 }

@@ -4,8 +4,8 @@
     {
         public string InputText { get; private set; }
         public string DescrText { get; private set; }
-        public DateTime StartDate { get; private set; }
-        public DateTime DueDate { get; private set; }
+        public DateOnly StartDate { get; private set; }
+        public DateOnly DueDate { get; private set; }
         public bool isCustom { get; private set; }
 
         public InputForm()
@@ -41,8 +41,8 @@
                 isCustom  = true;
                 InputText = txtTitle.Text;
                 DescrText = txtDescr.Text;
-                StartDate = checkCustom.Checked ? DateTime.SpecifyKind(dtStartDate.Value, DateTimeKind.Utc) : DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
-                DueDate   = checkCustom.Checked ? DateTime.SpecifyKind(dtDueDate.Value, DateTimeKind.Utc)   : DateTime.SpecifyKind(DateTime.MaxValue, DateTimeKind.Utc);
+                StartDate = checkCustom.Checked ? DateOnly.FromDateTime(dtStartDate.Value) : DateOnly.MinValue;
+                DueDate   = checkCustom.Checked ? DateOnly.FromDateTime(dtDueDate.Value)   : DateOnly.MaxValue;
 
                 if (InputText == "")
                     throw new Exception("Informe o título");

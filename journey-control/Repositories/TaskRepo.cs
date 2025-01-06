@@ -17,7 +17,16 @@ namespace journey_control.Repositories
                             .Where(t => t.UserId == user.Id && t.VersionId == versionId)
                             .AnyAsync();
         }
-        
+
+        public async Task<Boolean> ExistsByIdAndUser(string taskId)
+        {
+            var user = UserDataManager.LoadUserData();
+
+            return await _context.Tasks
+                            .Where(t => t.UserId == user.Id && t.Id == taskId)
+                            .AnyAsync();
+        }
+
         public async Task<Boolean> StudyTaskExists()
         {
             return await _context.Tasks
@@ -50,8 +59,8 @@ namespace journey_control.Repositories
 
             if (existingTask != null)
             {
-                var startDate = DateTime.SpecifyKind(issue.StartDate ?? DateTime.MinValue, DateTimeKind.Utc);
-                var dueDate   = DateTime.SpecifyKind(issue.DueDate ?? DateTime.MaxValue, DateTimeKind.Utc);
+                var startDate = issue.StartDate ?? DateOnly.MinValue;
+                var dueDate   = issue.DueDate ?? DateOnly.MaxValue;
 
                 existingTask.Title = issue.Subject;
                 existingTask.Description = issue.Description ?? "Sem descrição.";
@@ -64,8 +73,8 @@ namespace journey_control.Repositories
             }
             else
             {
-                var startDate = DateTime.SpecifyKind(issue.StartDate ?? DateTime.MinValue, DateTimeKind.Utc);
-                var dueDate = DateTime.SpecifyKind(issue.DueDate ?? DateTime.MaxValue, DateTimeKind.Utc);
+                var startDate = issue.StartDate ?? DateOnly.MinValue;
+                var dueDate = issue.DueDate ?? DateOnly.MaxValue;
 
                 var newTask = new Models.Task
                 {
@@ -88,16 +97,27 @@ namespace journey_control.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<Models.Task>> GetAllPerUserAndDate(DateTime date)
+        public async Task<ICollection<Models.Task>> GetAllPerUserAndDate(DateOnly date)
         {
             Models.User user = UserDataManager.LoadUserData();
-            return await _context.Tasks.Where(t => t.UserId == user.Id && t.StartDate <= date && t.DueDate >= date).ToListAsync();
+
+            var tasks = await _context.Tasks
+                .Include(t => t.Entries)
+                .Where(t => t.UserId == user.Id
+                            && t.StartDate <= date
+                            && t.DueDate   >= date) 
+                .ToListAsync();
+
+            return tasks;
         }
 
         public async Task<ICollection<Models.Task>> GetAllPerUserAndVersion(int versionId)
         {
             Models.User user = UserDataManager.LoadUserData();
-            return await _context.Tasks.Where(t => t.UserId == user.Id && t.VersionId == versionId).ToListAsync();
+            return await _context.Tasks
+                .Include(t => t.Entries)
+                .Where(t => t.UserId == user.Id && t.VersionId == versionId)
+                .ToListAsync();
         }
 
         public async System.Threading.Tasks.Task RemoveRange(List<Models.Task> tasks)

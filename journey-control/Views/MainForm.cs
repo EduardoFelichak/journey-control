@@ -20,13 +20,13 @@ namespace journey_control.Views
         private readonly TaskRepo _taskRepo = new TaskRepo();
         private readonly VersionRepo _versionRepo = new VersionRepo();
         private ICollection<Models.Task> tasks;
-        private DateTime currentDate;
+        private DateOnly currentDate;
 
         public MainForm()
         {
             InitializeComponent();
 
-            currentDate = DateTime.UtcNow;
+            currentDate = DateOnly.FromDateTime(DateTime.Today);
             UpdateDateLabel();
 
             this.Load += MainForm_Load;
@@ -82,18 +82,15 @@ namespace journey_control.Views
             {
                 var newTasks = await _taskRepo.GetAllPerUserAndDate(currentDate);
 
-                if (!tasks?.SequenceEqual(newTasks) ?? true)
-                {
-                    tasks = newTasks;
+                tasks = newTasks;
 
-                    pnlTaskList.Controls.Clear();
+                pnlTaskList.Controls.Clear();
 
-                    foreach (var task in tasks)
-                        AddTaskCard(task);
+                foreach (var task in tasks)
+                    AddTaskCard(task);
 
-                    pnlTaskList.PerformLayout();
-                    pnlTaskList.Refresh();
-                }
+                pnlTaskList.PerformLayout();
+                pnlTaskList.Refresh();
 
                 FilterTasksByDate(currentDate);
             }
@@ -115,17 +112,22 @@ namespace journey_control.Views
                 return $"{size}";
         }
 
-        private void AddTaskCard(Models.Task task)
+        private async void AddTaskCard(Models.Task task)
         {
+            var totalDuration = task.Entries?.Where(e => e.DateEntrie == currentDate).Sum(e => e.Duration) ?? 0;
+            var formattedDuration = TimeSpan.FromSeconds(totalDuration).ToString(@"hh\:mm\:ss");
+
             var taskCard = new TaskCard
             {
                 TaskNumber = task.Id.ToString(),
                 TaskTitle = task.Title,
                 TaskSize = $"Tamanho estimado: {GetDescrSize(task.Size)}",
-                TimerText = "00:00:00",
+                TimerText = formattedDuration,
                 Width = 300,
                 Height = 150
             };
+
+            taskCard.ControlButtons(currentDate == DateOnly.FromDateTime(DateTime.Today));
 
             int cardWidth = (pnlTaskList.ClientSize.Width - 40) / 2;
             taskCard.Width = cardWidth;
@@ -163,6 +165,7 @@ namespace journey_control.Views
             {
                 calendar.MaxSelectionCount = 1;
                 calendar.TodayDate = DateTime.Today;
+                calendar.SelectionStart = currentDate.ToDateTime(TimeOnly.MinValue);
 
                 Size calendarSize = calendar.PreferredSize;
 
@@ -181,7 +184,7 @@ namespace journey_control.Views
 
                 calendar.DateSelected += async (s, ev) =>
                 {
-                    await NavigateToDateAsync(DateTime.SpecifyKind(ev.Start, DateTimeKind.Utc));
+                    await NavigateToDateAsync(DateOnly.FromDateTime(ev.Start));
                     calendarForm.Close();
                 };
 
@@ -190,7 +193,7 @@ namespace journey_control.Views
             }
         }
 
-        private async Task NavigateToDateAsync(DateTime newDate)
+        private async Task NavigateToDateAsync(DateOnly newDate)
         {
             if (newDate == currentDate)
                 return;
@@ -218,7 +221,7 @@ namespace journey_control.Views
             }
         }
 
-        private void FilterTasksByDate(DateTime date)
+        private void FilterTasksByDate(DateOnly date)
         {
             try
             {

@@ -15,8 +15,8 @@ namespace journey_control.Models
         public string Description { get; set; }
         public SizeE Size { get; set; }
         public string Status { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateOnly StartDate { get; set; }
+        public DateOnly DueDate { get; set; }
         public int Project { get; set; }
         public int VersionId { get; set; }
         public int VersionProjectId { get; set; }

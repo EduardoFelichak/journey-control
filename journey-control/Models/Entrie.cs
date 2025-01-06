@@ -11,7 +11,8 @@ namespace journey_control.Models
         public string TaskId { get; set; }
         public int TaskUserId { get; set; }
         public Task Task { get; set; }
-        public DateTime DateEntrie { get; set; }
+        public DateOnly DateEntrie { get; set; }
         public int Duration { get; set; }
+        public bool IsInProgress { get; set; }
     }
 }
