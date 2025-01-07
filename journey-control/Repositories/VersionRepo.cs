@@ -32,5 +32,20 @@ namespace journey_control.Repositories
                             .Where(v => v.StartDate <= date && v.DueDate >= date && v.ProjectId == user.ProjectId)
                             .FirstAsync();
         }
+
+        public async Task<Models.Version?> GetById(int id)
+        {
+            var user = UserDataManager.LoadUserData();
+
+            return await _context.Versions
+                            .Where(v => v.Id == id && v.ProjectId == user.ProjectId)
+                            .FirstOrDefaultAsync();
+        }
+
+        public async System.Threading.Tasks.Task Update(Models.Version version)
+        {
+            _context.Versions.Update(version);
+            await _context.SaveChangesAsync();
+        }
     }
 }

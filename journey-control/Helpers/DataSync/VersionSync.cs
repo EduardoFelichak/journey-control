@@ -11,8 +11,18 @@ namespace journey_control.Helpers.Initializer
 
             Models.Version version = await redmineService.GetCurrentVersionAsync(date);
             VersionRepo versionRepo = new VersionRepo();
-            if (!await versionRepo.Exists(version.Id))
+
+            Models.Version? existingVersion = await versionRepo.GetById(version.Id);
+
+            if (existingVersion == null)
                 versionRepo.Add(version);
+            else
+            {
+                existingVersion.StartDate = version.StartDate;
+                existingVersion.DueDate   = version.DueDate;
+
+                await versionRepo.Update(existingVersion);
+            }
         }
     }
 }
