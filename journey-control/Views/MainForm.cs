@@ -338,6 +338,8 @@ namespace journey_control.Views
 
             try
             {
+                txtTaskSearch.Text = "";
+
                 await TaskSync.Run(currentDate);
                 await LoadTasksAsync();
             }

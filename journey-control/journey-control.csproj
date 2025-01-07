@@ -8,12 +8,26 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <ApplicationIcon>Images\icon-logo.ico</ApplicationIcon>
+    <Authors>Eduardo Felichak</Authors>
+    <PackageIcon>icon-logo.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
+    <Description>O Journey Control é um sistema intuitivo e eficiente de gestão de tarefas e controle de tempo, integrado com a plataforma Redmine. Ele foi projetado para facilitar o acompanhamento do progresso diário, permitindo que os usuários registrem e monitorem o tempo dedicado a cada tarefa, tanto em modo local quanto sincronizado com o Redmine.</Description>
+    <Copyright>© 2025 Eduardo Felichak. Todos os direitos reservados.</Copyright>
+    <PackageId>journeycontrol.app</PackageId>
+    <Title>Journey Control</Title>
+    <Company />
+    <Product>Journey Control</Product>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="DTOs\**" />
     <EmbeddedResource Remove="DTOs\**" />
     <None Remove="DTOs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\icon-logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,6 +57,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Images\icon-logo.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
