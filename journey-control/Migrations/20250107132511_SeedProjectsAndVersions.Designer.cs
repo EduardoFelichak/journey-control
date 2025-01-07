@@ -12,7 +12,7 @@ using journey_control.Infra.Context;
 namespace journey_control.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241230184836_SeedProjectsAndVersions")]
+    [Migration("20250107132511_SeedProjectsAndVersions")]
     partial class SeedProjectsAndVersions
     {
         /// <inheritdoc />
@@ -25,6 +25,21 @@ namespace journey_control.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("journey_control.Models.AppVersion", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("app_version");
+                });
+
             modelBuilder.Entity("journey_control.Models.Entrie", b =>
                 {
                     b.Property<int>("Id")
@@ -33,8 +48,8 @@ namespace journey_control.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateEntrie")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DateEntrie")
+                        .HasColumnType("date");
 
                     b.Property<int>("Duration")
                         .HasColumnType("integer");
@@ -51,6 +66,34 @@ namespace journey_control.Migrations
                     b.HasIndex("TaskId", "TaskUserId");
 
                     b.ToTable("entries");
+                });
+
+            modelBuilder.Entity("journey_control.Models.LocalEntrie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("DateEntrie")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TaskId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("TaskUserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TaskId", "TaskUserId");
+
+                    b.ToTable("local_entries");
                 });
 
             modelBuilder.Entity("journey_control.Models.Project", b =>
@@ -82,8 +125,8 @@ namespace journey_control.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("Project")
                         .HasColumnType("integer");
@@ -91,8 +134,8 @@ namespace journey_control.Migrations
                     b.Property<int>("Size")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -123,15 +166,15 @@ namespace journey_control.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DueDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
 
                     b.HasKey("Id", "ProjectId");
 
@@ -144,6 +187,17 @@ namespace journey_control.Migrations
                 {
                     b.HasOne("journey_control.Models.Task", "Task")
                         .WithMany("Entries")
+                        .HasForeignKey("TaskId", "TaskUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("journey_control.Models.LocalEntrie", b =>
+                {
+                    b.HasOne("journey_control.Models.Task", "Task")
+                        .WithMany("LocalEntries")
                         .HasForeignKey("TaskId", "TaskUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -181,6 +235,8 @@ namespace journey_control.Migrations
             modelBuilder.Entity("journey_control.Models.Task", b =>
                 {
                     b.Navigation("Entries");
+
+                    b.Navigation("LocalEntries");
                 });
 
             modelBuilder.Entity("journey_control.Models.Version", b =>

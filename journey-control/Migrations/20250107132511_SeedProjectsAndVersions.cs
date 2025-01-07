@@ -32,8 +32,8 @@ namespace journey_control.Migrations
                         migrationBuilder.Sql($@"
                             INSERT INTO versions (""Id"", ""Name"", ""StartDate"", ""DueDate"", ""ProjectId"")
                             VALUES ({version.Id}, '{version.Name.Replace("'", "''")}', 
-                                    '{version.StartDate:yyyy-MM-ddTHH:mm:ssZ}', 
-                                    '{version.DueDate:yyyy-MM-ddTHH:mm:ssZ}', 
+                                    '{version.StartDate:yyyy-MM-dd}', 
+                                    '{version.DueDate:yyyy-MM-dd}', 
                                     {project.Id})
                             ON CONFLICT (""Id"", ""ProjectId"") DO NOTHING;
                         ");
@@ -51,7 +51,7 @@ namespace journey_control.Migrations
 
         private async Task<List<ProjectModel>> GetProjectsAndVersionsFromApi()
         {
-            var userApiKey = "d4448cc4a344af89ce4bd40a561bd9e79600e393";
+            var userApiKey = "f62aa45cac769781b1f04d76824dcc364a2781e1";
             var baseUrl = "https://redmine.questor.com.br";
 
             using (HttpClient client = new HttpClient())
@@ -107,8 +107,8 @@ namespace journey_control.Migrations
 
                 foreach (var version in versionData.versions)
                 {
-                    DateTime? startDate = null;
-                    DateTime? dueDate = null;
+                    DateOnly? startDate = null;
+                    DateOnly? dueDate = null;
 
                     var customFields = version.custom_fields as IEnumerable<dynamic>;
                     if (customFields != null)
@@ -116,13 +116,13 @@ namespace journey_control.Migrations
                         var startDateField = customFields.FirstOrDefault(field => (string)field.name == "Data Início");
                         if (startDateField != null && !string.IsNullOrEmpty((string)startDateField.value))
                         {
-                            startDate = DateTime.Parse((string)startDateField.value).ToUniversalTime();
+                            startDate = DateOnly.FromDateTime(DateTime.Parse((string)startDateField.value).ToUniversalTime());
                         }
 
                         var dueDateField = customFields.FirstOrDefault(field => (string)field.name == "Data de Produção");
                         if (dueDateField != null && !string.IsNullOrEmpty((string)dueDateField.value))
                         {
-                            dueDate = DateTime.Parse((string)dueDateField.value).ToUniversalTime();
+                            dueDate = DateOnly.FromDateTime(DateTime.Parse((string)dueDateField.value).ToUniversalTime());
                         }
                     }
 
@@ -158,8 +158,8 @@ namespace journey_control.Migrations
         {
             public int Id { get; set; }
             public string Name { get; set; }
-            public DateTime StartDate { get; set; }
-            public DateTime DueDate { get; set; }
+            public DateOnly StartDate { get; set; }
+            public DateOnly DueDate { get; set; }
         }
     }
 }

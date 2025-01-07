@@ -90,7 +90,7 @@ namespace journey_control.Migrations
 
                     b.HasIndex("TaskId", "TaskUserId");
 
-                    b.ToTable("LocalEntries");
+                    b.ToTable("local_entries");
                 });
 
             modelBuilder.Entity("journey_control.Models.Project", b =>

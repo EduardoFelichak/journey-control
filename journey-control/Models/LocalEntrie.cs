@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace journey_control.Models
 {
-    //[Table("local_entries")]
+    [Table("local_entries")]
     public class LocalEntrie
     {
         [Key]

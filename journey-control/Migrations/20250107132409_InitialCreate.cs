@@ -13,6 +13,18 @@ namespace journey_control.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "app_version",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_app_version", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "projects",
                 columns: table => new
                 {
@@ -32,8 +44,8 @@ namespace journey_control.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false),
                     ProjectId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    DueDate = table.Column<DateOnly>(type: "date", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,8 +68,8 @@ namespace journey_control.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     Size = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DueDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    DueDate = table.Column<DateOnly>(type: "date", nullable: false),
                     Project = table.Column<int>(type: "integer", nullable: false),
                     VersionId = table.Column<int>(type: "integer", nullable: false),
                     VersionProjectId = table.Column<int>(type: "integer", nullable: false)
@@ -81,7 +93,7 @@ namespace journey_control.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TaskId = table.Column<string>(type: "text", nullable: false),
                     TaskUserId = table.Column<int>(type: "integer", nullable: false),
-                    DateEntrie = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DateEntrie = table.Column<DateOnly>(type: "date", nullable: false),
                     Duration = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -95,9 +107,36 @@ namespace journey_control.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "local_entries",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    TaskId = table.Column<string>(type: "text", nullable: false),
+                    TaskUserId = table.Column<int>(type: "integer", nullable: false),
+                    DateEntrie = table.Column<DateOnly>(type: "date", nullable: false),
+                    Duration = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_local_entries", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_local_entries_tasks_TaskId_TaskUserId",
+                        columns: x => new { x.TaskId, x.TaskUserId },
+                        principalTable: "tasks",
+                        principalColumns: new[] { "Id", "UserId" },
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_entries_TaskId_TaskUserId",
                 table: "entries",
+                columns: new[] { "TaskId", "TaskUserId" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_local_entries_TaskId_TaskUserId",
+                table: "local_entries",
                 columns: new[] { "TaskId", "TaskUserId" });
 
             migrationBuilder.CreateIndex(
@@ -115,7 +154,13 @@ namespace journey_control.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "app_version");
+
+            migrationBuilder.DropTable(
                 name: "entries");
+
+            migrationBuilder.DropTable(
+                name: "local_entries");
 
             migrationBuilder.DropTable(
                 name: "tasks");
