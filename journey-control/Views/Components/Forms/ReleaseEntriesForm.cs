@@ -89,6 +89,7 @@ namespace journey_control.Views.Components.Forms
 
                 row.Cells["colDate"].Value = entry.DateEntrie.ToString("dd/MM/yyyy");
                 row.Cells["colDuration"].Value = duration.ToString(@"hh\:mm");
+                row.Cells["colTaskTitle"].Value = entry.Task.Title;
 
                 if (entry.TaskId == "Estudo")
                 {
