@@ -414,6 +414,7 @@
             btnReleaseTasks.TabIndex = 7;
             btnReleaseTasks.Text = "Lançar Tempo";
             btnReleaseTasks.UseVisualStyleBackColor = false;
+            btnReleaseTasks.Click += btnReleaseTasks_Click;
             // 
             // panel14
             // 

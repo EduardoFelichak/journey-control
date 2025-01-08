@@ -28,6 +28,17 @@ namespace journey_control.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<List<LocalEntrie>> GetAllPerDate(DateOnly date)
+        {
+            var user = UserDataManager.LoadUserData();
+
+            return await _context.LocalEntries
+                .Include(e => e.Task)
+                .Where(e => e.DateEntrie == date && e.TaskUserId == user.Id)
+                .ToListAsync(); 
+        }
+
+
         public async Task<int> GetTotalTimeByTaskAndDate(string taskId, DateOnly date)
         {
             var user = UserDataManager.LoadUserData();

@@ -7,9 +7,8 @@ using journey_control.Services;
 using journey_control.Views.Components.Cards;
 using journey_control.Views.Components.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
-using Microsoft.VisualBasic;
+using System.Diagnostics;
 using Task = System.Threading.Tasks.Task;
-using System.Threading.Tasks;
 
 namespace journey_control.Views
 {
@@ -80,16 +79,16 @@ namespace journey_control.Views
             EntriesRepo entriesRepo = new EntriesRepo();
             LocalEntriesRepo localEntriesRepo = new LocalEntriesRepo();
 
-            string releasedTime  = TimeSpan.FromSeconds(await entriesRepo.GetRealesedTime(currentDate)).ToString(@"hh\:mm\:ss");
-            string beggingTime   = TimeSpan.FromSeconds(await localEntriesRepo.GetRealesedTime(currentDate)).ToString(@"hh\:mm\:ss");
+            string releasedTime = TimeSpan.FromSeconds(await entriesRepo.GetRealesedTime(currentDate)).ToString(@"hh\:mm\:ss");
+            string beggingTime = TimeSpan.FromSeconds(await localEntriesRepo.GetRealesedTime(currentDate)).ToString(@"hh\:mm\:ss");
             string totalDuration = TimeSpan.FromSeconds(await entriesRepo.GetTotalSpentTimePerDate(currentDate)).ToString(@"hh\:mm\:ss");
-            string workDuration  = TimeSpan.FromSeconds(await entriesRepo.GetWorkTimeSpentPerDate(currentDate)).ToString(@"hh\:mm\:ss");
+            string workDuration = TimeSpan.FromSeconds(await entriesRepo.GetWorkTimeSpentPerDate(currentDate)).ToString(@"hh\:mm\:ss");
             string studyDuration = TimeSpan.FromSeconds(await entriesRepo.GetStudyTimeSpentPerDate(currentDate)).ToString(@"hh\:mm\:ss");
 
-            txtTotalTime.Text    = totalDuration;
-            txtWorkTime.Text     = workDuration;
-            txtStudyTime.Text    = studyDuration;
-            txtBeggingTime.Text  = beggingTime;
+            txtTotalTime.Text = totalDuration;
+            txtWorkTime.Text = workDuration;
+            txtStudyTime.Text = studyDuration;
+            txtBeggingTime.Text = beggingTime;
             txtReleasedTime.Text = releasedTime;
         }
 
@@ -108,7 +107,7 @@ namespace journey_control.Views
 
                 foreach (var task in tasks)
                 {
-                    var totalDuration = await entriesRepo.GetTotalTimeByTaskAndDate(task.Id, currentDate) + 
+                    var totalDuration = await entriesRepo.GetTotalTimeByTaskAndDate(task.Id, currentDate) +
                                         await localEntriesRepo.GetTotalTimeByTaskAndDate(task.Id, currentDate);
 
                     task.Entries = new List<Entrie>
@@ -306,14 +305,14 @@ namespace journey_control.Views
             btnAddTask.Enabled = !isLoading;
             btnRefreshTasks.Enabled = !isLoading;
             btnReleaseTasks.Enabled = !isLoading;
-            
+
             if (isLoading)
             {
-                txtWorkTime.Text     = "";
-                txtStudyTime.Text    = "";
-                txtTotalTime.Text    = "";
+                txtWorkTime.Text = "";
+                txtStudyTime.Text = "";
+                txtTotalTime.Text = "";
                 txtReleasedTime.Text = "";
-                txtBeggingTime.Text  = "";
+                txtBeggingTime.Text = "";
             }
         }
 
@@ -349,14 +348,14 @@ namespace journey_control.Views
             }
             finally
             {
-                ShowLoading(false); 
+                ShowLoading(false);
             }
-        
+
         }
 
         private async void btnAddTask_Click(object sender, EventArgs e)
         {
-            ShowLoading(true); 
+            ShowLoading(true);
 
             try
             {
@@ -439,7 +438,8 @@ namespace journey_control.Views
                                 MessageBox.Show("O número da tarefa informado é inválido. Por favor, insira um número válido.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             }
                         }
-                    } else
+                    }
+                    else
                     {
                         await ControlTotalizers();
                     }
@@ -451,7 +451,34 @@ namespace journey_control.Views
             }
             finally
             {
-                ShowLoading(false); 
+                ShowLoading(false);
+            }
+        }
+
+        private async void btnReleaseTasks_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtBeggingTime.Text == "00:00:00")
+                    throw new Exception("Não existem horas pendentes de lançamento");
+
+                var releaseEntriesForm = new ReleaseEntriesForm(currentDate);
+
+                Debug.WriteLine($"Thread antes do await: {Thread.CurrentThread.ManagedThreadId}");
+                await releaseEntriesForm.LoadDataAsync();
+                Debug.WriteLine($"Thread depois do await: {Thread.CurrentThread.ManagedThreadId}");
+
+                this.Invoke(() =>
+                {
+                    Debug.WriteLine("PopulateGrid() rodando na thread: " + Thread.CurrentThread.ManagedThreadId);
+                    
+                    releaseEntriesForm.PopulateGrid();
+                    releaseEntriesForm.Show();
+                });
+            } 
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao lançar horas: {ex.Message}.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

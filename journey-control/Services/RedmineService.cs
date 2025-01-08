@@ -249,5 +249,45 @@ namespace journey_control.Services
 
             return entries;
         }
+
+        public async Task<List<Activity>> GetActivitiesAsync()
+        {
+            var activities = new List<Activity>();
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    var user = UserDataManager.LoadUserData();
+
+                    client.DefaultRequestHeaders.Add("X-Redmine-API-Key", user.ApiKey);
+                    var response = await client.GetAsync($"{baseUrl}/enumerations/time_entry_activities.json");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        var data = JsonConvert.DeserializeObject<dynamic>(json);
+
+                        foreach (var activity in data.time_entry_activities)
+                        {
+                            activities.Add(new Activity
+                            {
+                                Id = (int)activity.id,
+                                Name = (string)activity.name
+                            });
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception($"Erro ao obter atividades: {response.StatusCode}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return activities;
+        }
     }
 }

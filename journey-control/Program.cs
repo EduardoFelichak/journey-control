@@ -7,18 +7,12 @@ namespace journey_control
     internal static class Program
     {
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
             var user = UserDataManager.LoadUserData();
-
-            if (user != null)
-            {
-                var redmineService = new RedmineService();
-                user = await redmineService.GetUserAsync(user.ApiKey);
-            }
 
             //TODO: - Implementar serviço de atualização
             //usando o seguinte comando: Application.ProductVersion.Split('+')[0] podemos pegar a versão guardada no binário do projeto
