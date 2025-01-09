@@ -124,6 +124,15 @@ namespace journey_control.Repositories
                 .ToListAsync();
         }
 
+        public async Task<bool> Exists(string id)
+        {
+            var user = UserDataManager.LoadUserData();
+
+            return await _context.Tasks
+                .Where(t => t.Id == id && t.UserId == user.Id)
+                .AnyAsync();
+        }
+
         public async System.Threading.Tasks.Task RemoveRange(List<Models.Task> tasks)
         {
             _context.Tasks.RemoveRange(tasks);

@@ -2,6 +2,7 @@
 using journey_control.Infra.Context;
 using journey_control.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace journey_control.Repositories
 {
@@ -58,6 +59,17 @@ namespace journey_control.Repositories
             return await _context.LocalEntries
                 .Where(e => e.DateEntrie == date && e.TaskUserId == user.Id)
                 .SumAsync(e => e.Duration);
+        }
+
+        public async System.Threading.Tasks.Task Delete(int id)
+        {
+            var localEntrie = await _context.LocalEntries.FirstOrDefaultAsync(e => e.Id == id);    
+
+            if (localEntrie != null)
+            {
+                _context.LocalEntries.Remove(localEntrie);  
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }

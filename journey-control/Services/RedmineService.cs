@@ -199,46 +199,70 @@ namespace journey_control.Services
             try
             {
                 var user = UserDataManager.LoadUserData();
-
                 if (user == null)
                     throw new Exception("Usuário não encontrado.");
 
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("X-Redmine-API-Key", user.ApiKey);
+
                     string dateString = date.ToString("yyyy-MM-dd");
 
                     HttpResponseMessage response = await client.GetAsync($"{baseUrl}/time_entries.json?user_id={user.Id}&spent_on={dateString}");
 
-                    if (response.IsSuccessStatusCode)
+                    if (!response.IsSuccessStatusCode)
+                        throw new Exception($"Erro na requisição ao Redmine: {response.StatusCode}");
+
+                    string json = await response.Content.ReadAsStringAsync();
+                    var data = JsonConvert.DeserializeObject<dynamic>(json);
+
+                    foreach (var timeEntry in data.time_entries)
                     {
-                        string json = await response.Content.ReadAsStringAsync();
-                        var data = JsonConvert.DeserializeObject<dynamic>(json);
+                        if (timeEntry.hours == null || timeEntry.spent_on == null)
+                            continue;
 
-                        foreach (var timeEntry in data.time_entries)
+                        string spentOnStr = (string)timeEntry.spent_on;
+                        if (!DateOnly.TryParse(spentOnStr, out DateOnly spentOnDate))
+                            continue;
+
+                        double hours = (double)timeEntry.hours;
+                        int durationSeconds = (int)(hours * 3600);
+
+                        int redmineEntryId = (int)timeEntry.id;
+
+                        if (timeEntry.issue != null && timeEntry.issue.id != null)
                         {
-                            if (timeEntry.issue == null || timeEntry.hours == null)
-                                continue;
-
-                            string issueId = timeEntry.issue?.id?.ToString() ?? string.Empty;
-                            double hours = timeEntry.hours != null ? (double)timeEntry.hours : 0;
-
+                            string issueId = timeEntry.issue.id.ToString();
                             if (!string.IsNullOrEmpty(issueId))
                             {
                                 entries.Add(new Entrie
                                 {
-                                    Id = (int)timeEntry.id,
+                                    Id = redmineEntryId,
                                     TaskId = issueId,
                                     TaskUserId = user.Id,
-                                    DateEntrie = DateOnly.Parse((string)timeEntry.spent_on),
-                                    Duration = (int)(hours * 3600),
+                                    DateEntrie = spentOnDate,
+                                    Duration = durationSeconds,
                                 });
                             }
                         }
-                    }
-                    else
-                    {
-                        throw new Exception($"Erro na requisição ao Redmine: {response.StatusCode}");
+                        else
+                        {
+                            string commentStr = timeEntry.comments?.ToString();
+                            if (!string.IsNullOrEmpty(commentStr))
+                            {
+                                var taskRepo = new TaskRepo();
+
+                                if (await taskRepo.Exists(commentStr))
+                                    entries.Add(new Entrie
+                                    {
+                                        Id = redmineEntryId,
+                                        TaskId = commentStr,
+                                        TaskUserId = user.Id,
+                                        DateEntrie = spentOnDate,
+                                        Duration = durationSeconds,
+                                    });
+                            }
+                        }
                     }
                 }
             }
@@ -249,6 +273,7 @@ namespace journey_control.Services
 
             return entries;
         }
+
 
         public async Task<List<Activity>> GetActivitiesAsync()
         {

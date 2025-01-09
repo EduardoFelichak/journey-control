@@ -120,16 +120,30 @@ namespace journey_control.Views.Components.Forms
         {
             _timer.Stop();
 
-            var entry = new LocalEntrie
-            {
-                TaskId = _task.Id,
-                TaskUserId = _task.UserId,
-                DateEntrie = DateOnly.FromDateTime(DateTime.Now),
-                Duration = (int)_currentDuration.TotalSeconds,
-            };
+            var entriesRepo = new EntriesRepo();
+            var localEntriesRepo = new LocalEntriesRepo();
+            var currentDate = DateOnly.FromDateTime(DateTime.Now);
 
-            var entryRepo = new LocalEntriesRepo();
-            await entryRepo.Add(entry);
+            int redmineTime = await entriesRepo.GetTotalTimeByTaskAndDate(_task.Id, currentDate);
+            int localTime = await localEntriesRepo.GetTotalTimeByTaskAndDate(_task.Id, currentDate);
+            int totalLaunchedSeconds = redmineTime + localTime;
+
+            int clockSeconds = (int)_currentDuration.TotalSeconds;
+
+            int pendingSeconds = clockSeconds - totalLaunchedSeconds;
+
+            if (pendingSeconds > 0)
+            {
+                var newEntry = new LocalEntrie
+                {
+                    TaskId = _task.Id,
+                    TaskUserId = _task.UserId,
+                    DateEntrie = currentDate,
+                    Duration = pendingSeconds,
+                };
+
+                await localEntriesRepo.Add(newEntry);
+            }
 
             _trayIcon.Visible = false;
 
@@ -148,6 +162,7 @@ namespace journey_control.Views.Components.Forms
 
             Hide();
         }
+
 
         private void TimeControlForm_FormClosing(object sender, FormClosingEventArgs e)
         {

@@ -462,19 +462,26 @@ namespace journey_control.Views
                 if (txtBeggingTime.Text == "00:00:00")
                     throw new Exception("Não existem horas pendentes de lançamento");
 
+                LocalEntriesRepo localEntriesRepo = new LocalEntriesRepo();                
+                var localEntries = await localEntriesRepo.GetAllPerDate(currentDate);
+
+                if (!localEntries.Any(x => x.Duration >= 60))
+                    throw new Exception("Não há registros pendentes de tempo com pelo menos um minuto de duração");
+
                 var releaseEntriesForm = new ReleaseEntriesForm(currentDate);
 
-                Debug.WriteLine($"Thread antes do await: {Thread.CurrentThread.ManagedThreadId}");
                 await releaseEntriesForm.LoadDataAsync();
-                Debug.WriteLine($"Thread depois do await: {Thread.CurrentThread.ManagedThreadId}");
+                releaseEntriesForm.PopulateGrid();
+                releaseEntriesForm.ShowDialog();
 
-                this.Invoke(() =>
+                if (releaseEntriesForm.launchTasks)
                 {
-                    Debug.WriteLine("PopulateGrid() rodando na thread: " + Thread.CurrentThread.ManagedThreadId);
-                    
-                    releaseEntriesForm.PopulateGrid();
-                    releaseEntriesForm.Show();
-                });
+                    ShowLoading(true);
+                    await releaseEntriesForm.LaunchTasks();
+                    await LoadTasksAsync();
+                    await ControlTotalizers();
+                    MessageBox.Show($"Lançamento de horas realizado.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             } 
             catch (Exception ex)
             {
