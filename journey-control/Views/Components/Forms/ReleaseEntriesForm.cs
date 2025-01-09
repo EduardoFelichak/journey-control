@@ -3,6 +3,7 @@ using journey_control.Helpers.AppData;
 using journey_control.Models;
 using journey_control.Repositories;
 using journey_control.Services;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace journey_control.Views.Components.Forms
@@ -13,7 +14,7 @@ namespace journey_control.Views.Components.Forms
         private readonly RedmineService _redmineService = new RedmineService();
         private readonly LocalEntriesRepo _localEntriesRepo = new LocalEntriesRepo();
         private readonly ProjectRepo _projectRepo = new ProjectRepo();
-        private List<Activity> _activities = new List<Activity>();
+        private List<Models.Activity> _activities = new List<Models.Activity>();
         private List<ProjectIndicator> _projectIndicators = ProjectIndicator.GetDefaultIndicators();
         private List<LocalEntrie> _localEntries = new List<LocalEntrie>();
         private List<Project> _projects = new List<Project>();
@@ -226,10 +227,58 @@ namespace journey_control.Views.Components.Forms
                 if ((bool?)row.Cells["colOk"].Value != true)
                     continue;
 
-                await ReleaseHoursForRowAsync(row, user.ApiKey);
+                string taskNum = row.Cells["colTaskNum"].Value?.ToString();
+
+                if (taskNum != "Estudo")
+                    await ReleaseHoursForRowAsync(row, user.ApiKey);
+                else
+                {
+                    string durationHhMm = row.Cells["colDuration"].Value?.ToString() ?? "00:00";
+                    string durationHhMmSs = $"{durationHhMm}:00";
+
+                    var entriesRepo = new EntriesRepo();
+
+                    await entriesRepo.Add(new Entrie
+                    {
+                        Id = await entriesRepo.GetNextNegativeIdAsync(),
+                        TaskId = "Estudo",
+                        TaskUserId = user.Id,
+                        DateEntrie = DateOnly.FromDateTime(DateTime.Now), 
+                        Duration = ConvertHhMmSsToSeconds(durationHhMmSs)
+                    });
+
+                    OpenGoogleForm();
+                }
             }
 
             await RemoveLaunchedLocalEntriesAsync();
+        }
+
+        private int ConvertHhMmSsToSeconds(string hhmmss)
+        {
+            if (TimeSpan.TryParse(hhmmss, out var ts))
+            {
+                return (int)ts.TotalSeconds;
+            }
+            return 0;
+        }
+
+        private void OpenGoogleForm()
+        {
+            string formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScR4LfXz2UQoslqUukuLfaF27b3GCdfs-roW7K-dTcGBceG8A/viewform";
+
+            try
+            {
+                Process.Start(new ProcessStartInfo
+                {
+                    FileName = formUrl,
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao abrir o formulário Registro de Treinamento/Curso/Capacitação: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private async System.Threading.Tasks.Task ReleaseHoursForRowAsync(DataGridViewRow row, string apiKey)
@@ -456,6 +505,9 @@ namespace journey_control.Views.Components.Forms
             foreach (DataGridViewRow row in gridEntries.Rows)
             {
                 if ((bool?)row.Cells["colOk"].Value != true)
+                    continue;
+
+                if (row.Cells["colId"].Value == null || !int.TryParse(row.Cells["colId"].Value.ToString(), out int localEntrieId))
                     continue;
 
                 await _localEntriesRepo.Delete((int)row.Cells["colId"].Value);

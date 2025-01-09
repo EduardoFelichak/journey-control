@@ -19,7 +19,7 @@ namespace journey_control.Helpers.DataSync
             var entryRepo = new EntriesRepo();
             var redmineService = new RedmineService();
 
-            Models.Version version = await versionRepo.GetVersionPerDate(date);
+            var version = await versionRepo.GetVersionPerDate(date);
             if (version == null)
                 throw new Exception("Versão correspondente à data não encontrada.");
 
@@ -62,19 +62,47 @@ namespace journey_control.Helpers.DataSync
             await taskRepo.UpdateRange(tasksToUpdate);
 
             var redmineEntries = await redmineService.GetTimeEntriesAsync(date);
+            var existingEntries = await entryRepo.GetEntriesByUserAndDate(date);
 
             foreach (var entry in redmineEntries)
             {
-                var taskExists = await taskRepo.ExistsByIdAndUser(entry.TaskId);
-                if (!taskExists)
+                var localEntry = await entryRepo.FindByIdAsync(entry.Id);
+
+                if (localEntry != null)
                 {
-                    var issue = await redmineService.GetIssueAsync(int.Parse(entry.TaskId));
-                    if (issue != null)
-                        await taskRepo.AddTaskFromIssueAsync(issue);
+                    localEntry.TaskId = entry.TaskId;
+                    localEntry.DateEntrie = entry.DateEntrie;
+                    localEntry.Duration = entry.Duration;
+                    await entryRepo.Update(localEntry);
+                }
+                else
+                {
+                    if (!await taskRepo.ExistsByIdAndUser(entry.TaskId))
+                    {
+                        var issue = await redmineService.GetIssueAsync(int.Parse(entry.TaskId));
+                        if (issue != null)
+                        {
+                            var newTask = CreateTaskFromIssue(issue, version, user.Id);
+                            await taskRepo.Add(newTask);
+                        }
+                    }
+
+                    await entryRepo.Add(entry);
                 }
             }
 
-            await entryRepo.AddOrUpdateFromRedmine(redmineEntries);
+            var redmineEntryIds = redmineEntries.Select(e => e.Id).ToList();
+            var entriesToRemove = existingEntries
+                .Where(e => !redmineEntryIds.Contains(e.Id))
+                .ToList();
+
+            foreach (var entryToRemove in entriesToRemove)
+            {
+                if (entryToRemove.TaskId == "Estudo")
+                    continue;
+
+                await entryRepo.Delete(entryToRemove.Id);
+            }
         }
 
         private static Models.Task CreateTaskFromIssue(dynamic issue, Models.Version version, int userId)
@@ -95,12 +123,13 @@ namespace journey_control.Helpers.DataSync
             };
         }
 
-        private static void UpdateTaskFromIssue(Models.Task task, dynamic issue)
+        private static void UpdateTaskFromIssue(Models.Task task, Issue issue)
         {
             task.Title = issue.Subject;
-            task.Description = issue.Description ?? "Nenhuma descrição.";
-            task.Size = GetSizeEnum(issue.Size);
-            task.Status = issue.Status;
+            task.Description = issue.Description ?? task.Description;
+            task.Status = issue.Status ?? task.Status;
+            task.StartDate = issue.StartDate ?? task.StartDate;
+            task.DueDate = issue.DueDate ?? task.DueDate;
         }
 
         private static SizeE GetSizeEnum(string size)

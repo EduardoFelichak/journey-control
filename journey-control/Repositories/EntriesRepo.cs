@@ -30,6 +30,20 @@ namespace journey_control.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task<int> GetNextNegativeIdAsync()
+        {
+            int? smallestNegativeId = await _context.Entries
+                .Where(e => e.Id < 0)
+                .OrderBy(e => e.Id)
+                .Select(e => (int?)e.Id)
+                .FirstOrDefaultAsync();
+
+            if (smallestNegativeId.HasValue)
+                return smallestNegativeId.Value - 1;
+            else
+                return -1;
+        }
+
         public async Task<List<Entrie>> GetEntriesByUserAndDate(DateOnly date)
         {
             var user = UserDataManager.LoadUserData();
@@ -54,7 +68,7 @@ namespace journey_control.Repositories
 
         public async System.Threading.Tasks.Task Add(Entrie entry)
         {
-            var existingEntry = await _context.Entries.FindAsync(entry);
+            var existingEntry = await _context.Entries.FindAsync(entry.Id);
 
             if (existingEntry != null)
             {
@@ -114,6 +128,28 @@ namespace journey_control.Repositories
                 .Where(e => e.DateEntrie == date && e.TaskUserId == user.Id
                         && e.TaskId == "Estudo")
                 .SumAsync(e => e.Duration);
+        }
+
+        public async System.Threading.Tasks.Task Update(Entrie entrie)
+        {
+            _context.Entries.Update(entrie);
+            await _context.SaveChangesAsync();
+        }
+
+        public async System.Threading.Tasks.Task Delete(int id)
+        {
+            var entrie = await _context.Entries.FirstOrDefaultAsync(e => e.Id == id);
+
+            if (entrie != null)
+            {
+                _context.Entries.Remove(entrie);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Entrie?> FindByIdAsync(int id)
+        {
+            return await _context.Entries.FindAsync(id);
         }
     }
 }

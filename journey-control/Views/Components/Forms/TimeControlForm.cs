@@ -125,8 +125,7 @@ namespace journey_control.Views.Components.Forms
             var currentDate = DateOnly.FromDateTime(DateTime.Now);
 
             int redmineTime = await entriesRepo.GetTotalTimeByTaskAndDate(_task.Id, currentDate);
-            int localTime = await localEntriesRepo.GetTotalTimeByTaskAndDate(_task.Id, currentDate);
-            int totalLaunchedSeconds = redmineTime + localTime;
+            int totalLaunchedSeconds = redmineTime;
 
             int clockSeconds = (int)_currentDuration.TotalSeconds;
 

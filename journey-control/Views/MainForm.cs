@@ -234,8 +234,8 @@ namespace journey_control.Views
 
                 calendar.DateSelected += async (s, ev) =>
                 {
-                    await NavigateToDateAsync(DateOnly.FromDateTime(ev.Start));
                     calendarForm.Close();
+                    await NavigateToDateAsync(DateOnly.FromDateTime(ev.Start));
                 };
 
                 calendarForm.Controls.Add(calendar);
@@ -478,8 +478,10 @@ namespace journey_control.Views
                 {
                     ShowLoading(true);
                     await releaseEntriesForm.LaunchTasks();
+                    await TaskSync.Run(currentDate);
                     await LoadTasksAsync();
                     await ControlTotalizers();
+                    ShowLoading(false);
                     MessageBox.Show($"Lançamento de horas realizado.", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             } 
