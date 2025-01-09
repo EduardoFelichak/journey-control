@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReleaseEntriesForm));
             panel1 = new Panel();
             gridEntries = new DataGridView();
             colOk = new DataGridViewCheckBoxColumn();
@@ -41,6 +42,7 @@
             colProjectInd = new DataGridViewComboBoxColumn();
             colExecPlace = new DataGridViewComboBoxColumn();
             colOvertime = new DataGridViewComboBoxColumn();
+            colId = new DataGridViewTextBoxColumn();
             panel4 = new Panel();
             panel3 = new Panel();
             panel2 = new Panel();
@@ -53,7 +55,6 @@
             txtQtd = new Label();
             panel21 = new Panel();
             panel13 = new Panel();
-            colId = new DataGridViewTextBoxColumn();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)gridEntries).BeginInit();
             panel2.SuspendLayout();
@@ -177,6 +178,12 @@
             colOvertime.HeaderText = "Hora Extra";
             colOvertime.Name = "colOvertime";
             colOvertime.Width = 61;
+            // 
+            // colId
+            // 
+            colId.HeaderText = "Id";
+            colId.Name = "colId";
+            colId.Visible = false;
             // 
             // panel4
             // 
@@ -307,12 +314,6 @@
             panel13.Size = new Size(70, 117);
             panel13.TabIndex = 0;
             // 
-            // colId
-            // 
-            colId.HeaderText = "Id";
-            colId.Name = "colId";
-            colId.Visible = false;
-            // 
             // ReleaseEntriesForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -320,6 +321,7 @@
             BackColor = Color.FromArgb(28, 23, 23);
             ClientSize = new Size(1408, 562);
             Controls.Add(panel1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ReleaseEntriesForm";

@@ -21,6 +21,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             pnlHeader = new Panel();
             panel10 = new Panel();
             btnAddTask = new Button();
@@ -736,10 +737,11 @@
             Controls.Add(pnlHeader);
             Controls.Add(pnlFooter);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "MainForm";
+            Text = "Controle de Jornada";
             pnlHeader.ResumeLayout(false);
             panel10.ResumeLayout(false);
             panel8.ResumeLayout(false);

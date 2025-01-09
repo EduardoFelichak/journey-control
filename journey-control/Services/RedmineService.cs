@@ -274,7 +274,6 @@ namespace journey_control.Services
             return entries;
         }
 
-
         public async Task<List<Activity>> GetActivitiesAsync()
         {
             var activities = new List<Activity>();

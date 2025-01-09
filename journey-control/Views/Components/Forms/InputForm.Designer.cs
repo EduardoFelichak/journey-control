@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputForm));
             panel1 = new Panel();
             panel6 = new Panel();
             panel8 = new Panel();
@@ -611,6 +612,7 @@
             ClientSize = new Size(384, 307);
             Controls.Add(tabControl1);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "InputForm";

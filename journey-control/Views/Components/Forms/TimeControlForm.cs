@@ -78,7 +78,7 @@ namespace journey_control.Views.Components.Forms
 
             _trayIcon = new NotifyIcon
             {
-                Icon = SystemIcons.Application,
+                Icon = Resources.icon_logo,
                 ContextMenuStrip = _trayMenu,
                 Text = "Controle de Tempo",
                 Visible = true

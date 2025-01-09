@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimeControlForm));
             panel1 = new Panel();
             panel2 = new Panel();
             panel3 = new Panel();
@@ -51,10 +52,10 @@
             btnPause = new Button();
             panel18 = new Panel();
             btnPlay = new Button();
+            panel19 = new Panel();
             panel7 = new Panel();
             pnlTime = new Panel();
             txtDuration = new Label();
-            panel19 = new Panel();
             panel5.SuspendLayout();
             panel10.SuspendLayout();
             panel13.SuspendLayout();
@@ -307,6 +308,14 @@
             btnPlay.UseVisualStyleBackColor = true;
             btnPlay.Click += btnPlay_Click;
             // 
+            // panel19
+            // 
+            panel19.Dock = DockStyle.Left;
+            panel19.Location = new Point(0, 0);
+            panel19.Name = "panel19";
+            panel19.Size = new Size(10, 62);
+            panel19.TabIndex = 8;
+            // 
             // panel7
             // 
             panel7.Controls.Add(pnlTime);
@@ -339,14 +348,6 @@
             txtDuration.Text = "00:00:00";
             txtDuration.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // panel19
-            // 
-            panel19.Dock = DockStyle.Left;
-            panel19.Location = new Point(0, 0);
-            panel19.Name = "panel19";
-            panel19.Size = new Size(10, 62);
-            panel19.TabIndex = 8;
-            // 
             // TimeControlForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -359,6 +360,7 @@
             Controls.Add(panel4);
             Controls.Add(panel3);
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "TimeControlForm";
             StartPosition = FormStartPosition.Manual;
