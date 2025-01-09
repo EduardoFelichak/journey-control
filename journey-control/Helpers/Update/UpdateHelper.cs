@@ -6,7 +6,7 @@ namespace journey_control.Helpers.Update
 {
     public static class UpdateHelper
     {
-        private static readonly string InstallerUrl = "https://github.com/EduardoFelichak/journey-control/releases/latest/download/setup.exe";
+        private static readonly string InstallerUrl = "https://github.com/EduardoFelichak/journey-control/releases/latest/download/journey_control_installer.msi\r\n";
         private static readonly string LocalInstallerPath = Path.Combine(Path.GetTempPath(), "journey_control_installer.exe");
         private static readonly ApplicationDBContext _context = new ApplicationDBContext();
 
