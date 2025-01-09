@@ -4,7 +4,6 @@
 	<Version>1.0.0.0</Version>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <RootNamespace>journey_control</RootNamespace>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -18,14 +17,17 @@
     <Title>Journey Control</Title>
     <Company />
     <Product>Journey Control</Product>
+    <StartupObject>journey_control.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Images\icon-logo.ico" />
+    <Compile Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Content Include="Images\icon-logo.ico" />
   </ItemGroup>
 
   <ItemGroup>
