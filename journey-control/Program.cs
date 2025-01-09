@@ -14,9 +14,6 @@ namespace journey_control
 
             var user = UserDataManager.LoadUserData();
 
-            //TODO: - Implementar serviço de atualização
-            //usando o seguinte comando: Application.ProductVersion.Split('+')[0] podemos pegar a versão guardada no binário do projeto
-
             if (user != null)
             {
                 Application.Run(new MainForm());

@@ -48,6 +48,7 @@
             panel12 = new Panel();
             panel22 = new Panel();
             btnReleaseTasks = new Button();
+            txtAppVersion = new Label();
             panel14 = new Panel();
             panel17 = new Panel();
             label6 = new Label();
@@ -392,10 +393,11 @@
             // panel22
             // 
             panel22.Controls.Add(btnReleaseTasks);
+            panel22.Controls.Add(txtAppVersion);
             panel22.Dock = DockStyle.Fill;
             panel22.Location = new Point(844, 0);
             panel22.Name = "panel22";
-            panel22.Size = new Size(298, 133);
+            panel22.Size = new Size(351, 133);
             panel22.TabIndex = 4;
             // 
             // btnReleaseTasks
@@ -409,13 +411,24 @@
             btnReleaseTasks.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnReleaseTasks.ForeColor = Color.FromArgb(218, 218, 218);
             btnReleaseTasks.ImageAlign = ContentAlignment.MiddleLeft;
-            btnReleaseTasks.Location = new Point(98, 29);
+            btnReleaseTasks.Location = new Point(84, 31);
             btnReleaseTasks.Name = "btnReleaseTasks";
-            btnReleaseTasks.Size = new Size(182, 78);
+            btnReleaseTasks.Size = new Size(154, 78);
             btnReleaseTasks.TabIndex = 7;
             btnReleaseTasks.Text = "Lançar Tempo";
             btnReleaseTasks.UseVisualStyleBackColor = false;
             btnReleaseTasks.Click += btnReleaseTasks_Click;
+            // 
+            // txtAppVersion
+            // 
+            txtAppVersion.Font = new Font("Segoe UI", 8F);
+            txtAppVersion.ForeColor = Color.Gray;
+            txtAppVersion.Location = new Point(212, 104);
+            txtAppVersion.Name = "txtAppVersion";
+            txtAppVersion.Size = new Size(139, 22);
+            txtAppVersion.TabIndex = 8;
+            txtAppVersion.Text = "0.0.0.0";
+            txtAppVersion.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panel14
             // 
@@ -661,9 +674,9 @@
             // panel21
             // 
             panel21.Dock = DockStyle.Right;
-            panel21.Location = new Point(1142, 0);
+            panel21.Location = new Point(1195, 0);
             panel21.Name = "panel21";
-            panel21.Size = new Size(70, 133);
+            panel21.Size = new Size(17, 133);
             panel21.TabIndex = 3;
             // 
             // panel13
@@ -827,5 +840,6 @@
         private Panel panel25;
         private Label txtReleasedTime;
         private Button btnReleaseTasks;
+        private Label txtAppVersion;
     }
 }

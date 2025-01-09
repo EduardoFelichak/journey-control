@@ -1,6 +1,7 @@
 ﻿using journey_control.Enums;
 using journey_control.Helpers.AppData;
 using journey_control.Helpers.DataSync;
+using journey_control.Helpers.Update;
 using journey_control.Models;
 using journey_control.Repositories;
 using journey_control.Services;
@@ -26,6 +27,7 @@ namespace journey_control.Views
         {
             InitializeComponent();
 
+            txtAppVersion.Text = $"Versão: {Application.ProductVersion.Split('+')[0]}";
             currentDate = DateOnly.FromDateTime(DateTime.Today);
             UpdateDateLabel();
 
@@ -35,6 +37,15 @@ namespace journey_control.Views
         private async void MainForm_Load(object sender, EventArgs e)
         {
             ShowLoading(true);
+
+            try
+            {
+                await UpdateHelper.CheckForUpdatesAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao verificar atualizações: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             try
             {
