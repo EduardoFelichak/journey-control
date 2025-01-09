@@ -14,7 +14,7 @@ namespace journey_control.Infra.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=jcDB;Username=root;Password=root");
+            optionsBuilder.UseNpgsql("connectionString");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

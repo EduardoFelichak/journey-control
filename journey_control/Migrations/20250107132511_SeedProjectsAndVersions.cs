@@ -51,7 +51,7 @@ namespace journey_control.Migrations
 
         private async Task<List<ProjectModel>> GetProjectsAndVersionsFromApi()
         {
-            var userApiKey = "f62aa45cac769781b1f04d76824dcc364a2781e1";
+            var userApiKey = "API_KEY";
             var baseUrl = "https://redmine.questor.com.br";
 
             using (HttpClient client = new HttpClient())
