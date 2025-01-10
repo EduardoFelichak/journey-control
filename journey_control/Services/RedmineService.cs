@@ -103,15 +103,15 @@ namespace journey_control.Services
 
                                 tasks.Add(new Issue
                                 {
-                                    Id = issue.id,
-                                    Subject = issue.subject,
-                                    Description = issue.description,
-                                    ProjectId = issue.project.id,
+                                    Id = (int)issue.id,
+                                    Subject = issue.subject?.ToString() ?? "Sem título",
+                                    Description = issue.description?.ToString() ?? "Sem descrição",
+                                    ProjectId = issue.project?.id ?? 0,
                                     StartDate = issue.start_date != null ? DateOnly.Parse((string)issue.start_date) : (DateOnly?)null,
                                     DueDate = issue.due_date != null ? DateOnly.Parse((string)issue.due_date) : (DateOnly?)null,
                                     Size = size,
-                                    FixedVersion = issue.fixed_version.id,
-                                    Status = issue.status.name
+                                    FixedVersion = issue.fixed_version?.id ?? 0,
+                                    Status = issue.status?.name?.ToString() ?? "Desconhecido"
                                 });
                             }
                         }
