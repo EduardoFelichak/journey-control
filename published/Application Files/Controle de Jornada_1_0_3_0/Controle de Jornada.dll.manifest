@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="Controle de Jornada.exe" version="1.0.3.0" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="Images\icon-logo.ico" xmlns="urn:schemas-microsoft-com:asm.v1">O Journey Control é um sistema intuitivo e eficiente de gestão de tarefas e controle de tempo, integrado com a plataforma Redmine. Ele foi projetado para facilitar o acompanhamento do progresso diário, permitindo que os usuários registrem e monitorem o tempo dedicado a cada tarefa, tanto em modo local quanto sincronizado com o Redmine.</description>
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="Launcher" version="8.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="Launcher.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          Opções de Manifesto do UAC
+          Para alterar o nível de Controle de Conta de Usuário do Windows, substitua o nó
+          requestedExecutionLevel por um dos seguintes.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         Para utilizar a Virtualização de Arquivos e Registro para manter a compatibilidade com versões anteriores,
+         exclua o nó requestedExecutionLevel.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Launcher.exe" size="16384">
+      <assemblyIdentity name="Launcher" version="8.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>aX02j+OwGrLgNjHmzmE4X/PA9uKPzHQYeOgfKU9frMw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="Controle de Jornada.deps.json" size="27724">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>vRtGBiHZATTLznYozwpymOKkkpDPFmoK8uCDqYM2cvk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Controle de Jornada.dll" size="421888">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>5sKa4037xxA6Z6Q5Wl9vJsP8wgWHRwKoKo2tJFNiq8w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Controle de Jornada.exe" size="163840">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>omFtzmJ6Flvq4JMKxk7bp7mVrStaOhcCIVcBPsGTrQI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Controle de Jornada.runtimeconfig.json" size="527">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>zOQ6nNFoH5xrQCW24Y7lBWazD6IX0u1Y07anvhSfY94=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\icon-logo.ico" size="20502">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>tkbUNCJe30DpPA7+kRQo9QSUgKral5fCyw9i+l8Ir9I=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.EntityFrameworkCore.Abstractions.dll" size="34856">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9Q0ZJZCthDKFJdA5Z6SaDtQ8VFo89ziw9GIpetLH188=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.EntityFrameworkCore.dll" size="2683432">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>9Pd3GwRNfEY0aM61akc0WEfTViDuRQwEfcaW9J3D7Mw=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.EntityFrameworkCore.Relational.dll" size="2137136">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>11ZATtUJ2JX2zeMSf/Z/7PMZdq/Hfo5kPKTVNsmuF7w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.Caching.Abstractions.dll" size="36632">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>cWEiRnkyzp2nK3DoamQAyC5iOy3w7/0E05DViT9b2ws=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.Caching.Memory.dll" size="47368">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>uAxpTZeoztKtqgFCm+RRCcuhBjkBv6rduDUONwPI3y8=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.Configuration.Abstractions.dll" size="28440">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ewtB6qhHN+m2yQNWhp/RjaA37RuvSrXG0FQAYPf+now=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.DependencyInjection.Abstractions.dll" size="65288">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ShO11dFcmVVEr2amDphduH3DjRPLj4EjSeSmMT27X58=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.DependencyInjection.dll" size="92424">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>WZzJr+kJiRLTh+3EWOTPzL2OFu/B76A6MDKs5lhpYME=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.Logging.Abstractions.dll" size="66336">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>qEBBygkQ7fS7mKTNjKtyw+zhok6Ch7R+LC79l8i2Rkc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.Logging.dll" size="51480">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>R3vbz2DShI+watC1LofTbRzXoAiUw2HWcfVeK+oWn1c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.Options.dll" size="65296">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>jjekNXoMmdKrLNzc+q9VstVEM8inbAmPXHMmlCsb78w=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Microsoft.Extensions.Primitives.dll" size="44296">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>B+P4gXLurfemAHT5sU29tSNtDDepc/xniHgl0PspnqM=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Newtonsoft.Json.dll" size="712464">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>IsZJ91/OW+fHzNqIgEc7Y072ns8z9dGritiSyvR9Wgc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Npgsql.dll" size="1429504">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>yI2JZlsLSQo7bHDlzCRAplZgTwbQsw6tlb+BZqpH/do=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Npgsql.EntityFrameworkCore.PostgreSQL.dll" size="658944">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>2gxc36OCCAgeZpLW1l9s1DuFg1tLb4xTx6Uo2gyIVoc=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll" size="70968">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>h9co4XPyQ3el5beM/5fn+IVWbZlwH1V/qa4J+6lUAYI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="System.Diagnostics.DiagnosticSource.dll" size="173840">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>ptsFW5abWjj3rbdqRVRC4BRCtR4q8Fc+ndVeJy3XIfI=</dsig:DigestValue>
+    </hash>
+  </file>
+</asmv1:assembly>
